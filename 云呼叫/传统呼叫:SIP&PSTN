@@ -1,0 +1,35 @@
+sip信令时序图
+![img.png](../Source/sip信令时序图.png)
+呼入场景
+![img_2.png](../Source/img_1.png)
+流程详解：
+--客户侧通话建立
+    1.客户进行invite呼入
+    2.代理到策略服务器获取FS-Router地址，用到的接口如下：
+这里客户端主要指的是PSTN：/tactics/cluster/router/invite/pstn   (did=didNum，这里取缓存值或者按照appId获取可用router)
+    3.策略服务器返回FS-Router地址。
+    4.代理将invite发送到FS-Router上
+    5.FS-Router需要向策略服务器查找媒体地址，接口如下：/tactics/cluster/media/invite   (did=didNum，按照appId获取可用media)
+    6.策略服务器返回FS-Media媒体地址
+    7.FS-Router转发invite信令到媒体地址
+    8.esls将消息推送给ipcc-agent
+--客服侧通话建立
+    9. agent向策略服务器获取该通话的esls地址，接口如下：/tactics/cluster/esls/url   (appId=appId,callId=callId,function=function，根据callId取缓存值或者根据appId和function获取可用esls)
+   10.ipcc-agent获取到当前空闲并且符合要求的坐席信息后，将相关信息推送到查找到的esls地址。
+   11.esls根据客服的sipId查到FS-Router地址，接口如下：/tactics/cluster/router/invite/esls    (type=0,account=sipID)
+   12.找到FS-Router地址后，将invite消息推送给FS-Router
+   13.FS-Router将invite信息发送给kamailio代理集群
+   14.代理集群将invite消息发送给客服端。
+   参考文档：http://doc.hz.netease.com/pages/viewpage.action?pageId=228832385
+
+PSTN：
+PSTN经过长时间的发展，目前演进到了IMS网络架构，可以把专用网络的信令流和数据流通过SIP_TRUNK的方式在Internet上面传输，这是VoIP和PSTN互通的基础。
+![pstn架构图.webp](../Source/pstn架构图.webp)
+PSTN经过长时间的发展，目前演进到了IMS网络架构，可以把专用网络的信令流和数据流通过SIP_TRUNK的方式在Internet上面传输，这是VoIP和PSTN互通的基础。
+接下来介绍下主要的服务和模块。
+最上层是Load Controller，主要负责SIP信令的接入和负载均衡。支持和PSTN的SIP中继对接，这是目前运营商主要采用的对接方式。Load Controller会根据PSTN Gateway的负载，将通话分配到合适的PSTN Gateway上（为了节省带宽，在会议已经存在的情况下会直接分配到同一台PSTN Gateway上）。
+PSTN Gateway负责SIP协议和Pano内部协议的转换，以及将相应的码流混音后和运营商媒体Server相通。
+PSTN Gateway主要有两大模块：
+编解码模块：目前各大运营商提供的PSTN的SIP中继对接方式，仅支持G711A、G711U等编码，采样率为8K；而VoIP常用的是OPUS编码，采样率一般为48k，所以需要处理音视频编解码和转码。
+
+MCU模块：由于手机端不支持接收多流，所以我们会在服务端混音后将一路码流发送给PSTN。
