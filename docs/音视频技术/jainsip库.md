@@ -19,7 +19,7 @@ javax.sip.message：该package包含了SIP消息相关的API，提供了SIP消�
 提高了应用程序的可移植性。在JAIN的架构中， 应用程序以SipFactory为中心生成其他相关类或接口，包
 括AddressFactory、HeaderFactory、MessageFactory和重要的SipStack，如图所示。 我们可以通
 过使用getInstance()方法获取唯一的SipFactory。  
-![img.png](../Source/picture/img.png)
+![img.png](../../resources/picture/img.png)
 
 ### 2.3.2 JAIN SIP 底层机制
 #### 2.3.2.1 SipStack 接口
@@ -27,7 +27,7 @@ javax.sip.message：该package包含了SIP消息相关的API，提供了SIP消�
 视为与外界通信的网络接口卡，该接口可用于接收网 络上传来的消息或对象，并将其传递给内部应用程序
 进行处理，或将内部的消息或对象发送到网络上。每个网络接口卡都有一组自己的IP地址，因此在同一个应
 用程序中，一个IP地址只能对应一个SipStack。  
-![img_1.png](../Source/picture/img_1.png)
+![img_1.png](../../resources/picture/img_1.png)
 
 #### 2.3.2.2 SipProvider接口
 在获得SipStack接口之后，接下来我们需要为应用程序建立SipProvider接口。如图三所示，SipProvider是JAIN SIP事件
@@ -92,7 +92,7 @@ transaction.send();
 
 
 ### 2.3.3 使用MessageFactory生成的Message对象
-![img_3.png](../Source/picture/img_3.png)
+![img_3.png](../../resources/picture/img_3.png)
 当我们介绍SipFactory接口时，提到SipFactory可以帮助我们创建MessageFactory，使用MessageFactory
 可以创建SIP协议中的Request和Response消息对象。在JAIN SIP中，Message对象可视为Request和Response
 的泛型，目的是将Request和Response共用的方法集合并在同一接口中。Request和Response分别对应SIP协议
@@ -100,14 +100,14 @@ transaction.send();
 ACK或180、200等）。
 
 ### 2.3.4 使用 AddressFactory 生成的 Address 对象
-![img_4.png](../Source/picture/img_4.png)
+![img_4.png](../../resources/picture/img_4.png)
 AddressFactory是由SipFactory生成的，生成后应用程序利用此对象生成Sip协议的各种URI相关对象，其中URI
 为SipURI和TelURL的泛型（Generic Type），目的是将SipURI和TelURL两者共用的方法集中在同一界面上，并
 预留日后扩展之用。另外值得注意的是，Address对象除了包含URI对象之外，还包含用来显示用户名的display name，
 display name通常会显示在用户界面上，以方便用户判断来电者为何。
 
 ### 2.3.5 使用HeaderFactory 生成的 Header 对象
-![img_2.png](../Source/picture/img_2.png)
+![img_2.png](../../resources/picture/img_2.png)
 HeaderFactory是由SipFactory生成的，生成后应用程序利用此对象生成Sip Protocol的所有Header相关对象，例如ToHeader、
 FromHeader、CseqHeader等。JAIN SIP规格将每一个不同类型的头定义为对象，并且所有在RFC3261中定义的Header在API中都
 有相应的类别。
@@ -188,7 +188,7 @@ SipStack 被视为 与外界通信的网络接口卡，该接口可用于接收�
 
 在生成SipStack对象时，必须先指定该对象的属性（Property），属性的内容包括IP地址、堆栈名称、
 出站代理等参数，并通过SipFactory的createSipStack(Properties)方法进行建立。
-![img_7.png](../Source/picture/img_7.png)
+![img_7.png](../../resources/picture/img_7.png)
 
 因此，在建立SipStack之前，我们必须建立Properties对象以存储这些属性
 
@@ -213,7 +213,7 @@ try {
 ```
 
 ### 3.3.3 ListeningPoint
-![img.png](../Source/picture/img_11.png)
+![img.png](../../resources/picture/img_11.png)
 如图所示，我们可以通过SIPStack对象创建新的ListeningPoint，ListeningPoint代表网络接口的端口号，因此在创建时必须指定端口号和使用的传输协议。
 ``` java
 //指定ip
@@ -284,7 +284,7 @@ MessageFactory messageFactory = sipFactory.createMessageFactory();
 
 在构建消息之前，我们必须先构建消息中包含的所有头部。以INVITE消息为例，成功构建一个INVITE消息需要包含六个头部对象：CSeqHeader、FromHeader、ToHeader、ViaHeaders、MaxForwards、CallIDHeader。
 
-![img_9.png](../Source/picture/img_9.png)
+![img_9.png](../../resources/picture/img_9.png)
 
 以下是构建和发送INVITE消息的原始代码：
 ``` java
@@ -361,7 +361,7 @@ inviteTransaction.sendRequest();
 ## 3.5 UAS Receive INVITE and Send Response
 在介绍 UAS 端如何处理收到的 INVITE 消息并回传 Response 消息时，我们先介绍 SipProvider 
 和 SipListener 之间的事件处理关系，如图 3.12 所示。
-![img_10.png](../Source/picture/img_10.png)
+![img_10.png](../../resources/picture/img_10.png)
 
 SipListener 是我们实现应用程序的一部分，其目的是为了接收从外界传来的事件。这些事件包括 
 Request Event、Response Event 和 Timeout Event，这些事件通过 SipProvider 发送

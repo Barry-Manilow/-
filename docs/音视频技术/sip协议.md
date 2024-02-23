@@ -52,7 +52,7 @@ SIP User Agents是用来建立和接收呼叫的终端装置，它们可能是�
 4. Registrar server（注册服务器）：注册服务器负责接收 REGISTER 消息，并将用户发送的地址信息记录在位置服务器中，以供代理或重定向服务器查询用户地址信息。
 
 ### 1.2.3 sip的呼叫单元
-![img_6.png](../Source/picture/img_6.png)
+![img_6.png](../../resources/picture/img_6.png)
 
 在我们进一步探讨 SIP 消息的功能之前，我们必须先定义 SIP 组成呼叫的单元，其中包括最基本的消息
 (Message)，以及由消息所组成的事务（Transaction）和会话（Dialog）。
