@@ -213,7 +213,7 @@ try {
 ```
 
 ### 3.3.3 ListeningPoint
-![img.png](../Source/picture/img11.png)
+![img.png](../Source/picture/img_11.png)
 如图所示，我们可以通过SIPStack对象创建新的ListeningPoint，ListeningPoint代表网络接口的端口号，因此在创建时必须指定端口号和使用的传输协议。
 ``` java
 //指定ip
